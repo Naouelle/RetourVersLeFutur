@@ -2,61 +2,112 @@
 
 class TimeTravel
 {
-    /*
-     *  @var DateTime
+
+    /**
+     * @param DateTime
      */
     private $start;
-    /*
-     *  @var DateTime
+
+    /**
+     * @param DateTime
      */
     private $end;
 
-    public function __construct($start, $end)
+    /**
+     * TimeTravel constructor.
+     * @param DateTime $start
+     * @param DateTime $end
+     */
+    public function __construct(DateTime $start, DateTime $end)
     {
-        $this->setStart($start);
-        $this->setEnd($end);
+        $this->start = $start;
+        $this->end = $end;
     }
 
+    /**
+     * @return string
+     */
     public function getTravelInfo()
     {
-        $diff = $this->start->diff( $this->end);
-        return $diff;
+        return $this->start->diff($this->end)->format('Il y a %y années, %m mois, %d jours, %H heures, %i minutes et %s secondes entre les deux dates');
     }
 
-    public function getStart()
+    public function findDate(DateInterval $interval)
+    {
+        return $this->start->sub($interval)->format('d/m/Y');
+    }
+
+
+    public function backToFutureStepByStep(DateInterval $step)
+    {
+        return new DatePeriod($this->start, $step, $this->end);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getStart(): DateTime
     {
         return $this->start;
     }
 
-    public function setStart($start)
+    /**
+     * @param DateTime $start
+     * @return $this
+     */
+    public function setStart(DateTime $start): TimeTravel
     {
-        $this->start = new DateTime($start);
+        $this->start = $start;
+        return $this;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getEnd()
     {
         return $this->end;
     }
 
-    public function setEnd($end)
+    /**
+     * @param DateTime $end
+     * @return $this
+     */
+    public function setEnd(DateTime $end)
     {
-        $this->end = clone $this->start;
-        $this->end->modify("- ".$end." seconds");
+        $this->end = $end;
+        return $this;
     }
 
-    public function findDate(DateInterval $interval)
-    {
-        $arrivalDate = clone $this->start;
-        $arrivalDate = $arrivalDate->add($interval) ;
-        return $arrivalDate;
-    }
-
-    public function backToFutureStepByStep(DatePeriod $step)
-    {
-        $period =[];
-        foreach ($step as $date) {
-            array_push($period, $date->format('M d Y A h:i'));
-        }
-        return $period;
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

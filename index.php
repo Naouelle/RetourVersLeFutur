@@ -3,16 +3,16 @@
 require 'TimeTravel.php';
 
 
-$travel = new TimeTravel('1985-12-31',1000000000);
-$diff = $travel->getTravelInfo();
+$timeTravel = new TimeTravel(new DateTime('1985-12-31'), new DateTime());
 
-echo "Il y a ". $diff->y ." années, ".$diff->m." mois, ".$diff->d." jours, ".$diff->h." heures, ".$diff->i." minutes et ".$diff->s." secondes entre les deux dates";
+echo $timeTravel->getTravelInfo();
+echo '<br>';
+echo $timeTravel->findDate(new DateInterval('PT1000000000S'));
+echo '<br>';
+$dates = $timeTravel->backToFutureStepByStep(new DateInterval('P1M8D'));
 
-$end = $travel->findDate($travel->getTravelInfo());
-echo date_format($end,'M d Y A h:i');
+/** @var DateTime $date */
+foreach ($dates as $date) {
+    echo $date->format('d/m/Y H:i:s') .'<br>';
+}
 
-$interval = DateInterval::createFromDateString('1 month 1 week 1 day');
-$period = new DatePeriod($travel->getEnd(), $interval, $travel->getStart());
-$caseTravels = $travel->backToFutureStepByStep($period);
-//var_dump($caseTravels);
-foreach ($caseTravels as $key => $value);
